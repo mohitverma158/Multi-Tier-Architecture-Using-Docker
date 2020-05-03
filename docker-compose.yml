@@ -1,1 +1,32 @@
+version: '3'
+
+services:
+  my_sql_container:
+    image: mysql:5.7
+    volumes:
+      - my_sql_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: qwerty
+      MYSQL_USER: mohit
+      MYSQL_PASSWORD: qwerty
+      MYSQL_DATABASE: my_database
+
+  my_wp_container:
+    image: wordpress:5.1.1-php7.3-apache
+    restart: always
+    depends_on:
+      - my_sql_container
+    ports:
+      - 8085:80
+    environment:
+      WORDPRESS_DB_HOST: my_sql_container
+      WORDPRESS_DB_USER: mohit
+      WORDPRESS_DB_PASSWORD: qwerty
+      WORDPRESS_DB_NAME: my_database
+    volumes:
+      - my_wp_data:/var/www/html
+
+volumes:
+  my_sql_data:
+  my_wp_data:
 
